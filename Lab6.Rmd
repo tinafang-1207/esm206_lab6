@@ -13,3 +13,48 @@ library(broom)
 library(equatiomatic)
 ```
 
+## Example of a rank-based test
+
+We'll make our own samples, using a pseudorandom generator.
+```{r}
+set.seed(1414)
+gp_1 <- sample.int(20, size = 15, replace = TRUE)
+
+set.seed(1424)
+gp_2 <- sample.int(30, size = 15, replace = TRUE)
+```
+
+```{r}
+hist(gp_1)
+
+hist (gp_2)
+```
+
+Try a t_test
+```{r}
+t.test(gp_1, gp_2)
+```
+
+meaning of p_value: p value means if these samples were drawn from population with the same mean, the probability of taking two random samples with means*at leaset as different* as the sample means we found by random chance (taking into account spread, n) is 19.82%
+
+Retain (fail to reject) the null hypothesis. >> There is no significance difference in means between group 1 and group 2
+
+warning: people get weirdly upset if you say "accept" the null.
+
+Now let's compare this outcome to a rank-based test
+
+## Mann Whitney U unpaired rank-based test
+```{r}
+mwU <- wilcox.test(gp_1, gp_2)
+
+mwU
+```
+
+If these samples were drawn from populations with the same ranks (medians), the probability of finding two samples with ranks*at least as different* as those in our sample is: 0.28. 
+
+There is no significant differences in ranks (medians) between group 1 and group 2 (statistical summary). 
+
+Median scores for group 1(M = 14) and group2 (M = 12) did not differs significantly (Mann Whittney U test: U(df) = 86, p = 0.28). 
+
+
+
